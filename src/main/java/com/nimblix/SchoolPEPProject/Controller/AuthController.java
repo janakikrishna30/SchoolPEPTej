@@ -7,10 +7,16 @@ import com.nimblix.SchoolPEPProject.Request.AuthStudentRequest;
 import com.nimblix.SchoolPEPProject.Response.AuthStudentResponse;
 import com.nimblix.SchoolPEPProject.Security.JwtUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.*;
-import org.springframework.security.authentication.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collections;
 
@@ -78,7 +84,8 @@ public class AuthController {
             // Build response
             AuthStudentResponse resp = new AuthStudentResponse();
             resp.setUserId(user.getId());
-            resp.setFullName(user.getFullName());
+            resp.setFirstName(user.getFirstName());
+            resp.setLastName(user.getLastName());
             resp.setEmail(user.getEmailId());
             resp.setRole(role);
             resp.setToken(token);
