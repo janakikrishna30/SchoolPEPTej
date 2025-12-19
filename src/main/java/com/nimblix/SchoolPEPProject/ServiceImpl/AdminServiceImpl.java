@@ -4,12 +4,11 @@ import com.nimblix.SchoolPEPProject.Constants.SchoolConstants;
 import com.nimblix.SchoolPEPProject.Model.Admin;
 import com.nimblix.SchoolPEPProject.Model.Role;
 import com.nimblix.SchoolPEPProject.Model.Student;
-import com.nimblix.SchoolPEPProject.Model.User;
 import com.nimblix.SchoolPEPProject.Repository.AdminRepository;
 import com.nimblix.SchoolPEPProject.Repository.RoleRepository;
 import com.nimblix.SchoolPEPProject.Repository.StudentRepository;
-import com.nimblix.SchoolPEPProject.Repository.UserRepository;
 import com.nimblix.SchoolPEPProject.Request.AdminAccountCreateRequest;
+import com.nimblix.SchoolPEPProject.Response.AdminProfileResponse;
 import com.nimblix.SchoolPEPProject.Service.AdminService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,15 +16,15 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@RequiredArgsConstructor
 @Service
+@RequiredArgsConstructor
 public class AdminServiceImpl implements AdminService {
 
     private final AdminRepository adminRepository;
-    private final PasswordEncoder passwordEncoder;
-    private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final StudentRepository studentRepository;
+    private final PasswordEncoder passwordEncoder;
+
     @Override
     public String submitEmail(String email) {
 
@@ -39,9 +38,11 @@ public class AdminServiceImpl implements AdminService {
 
         return "Email accepted. Continue to account creation.";
     }
+
     @Override
     public Long createAdminAccount(AdminAccountCreateRequest request) {
 
+        // Email validation
         if (request.getEmail() == null ||
                 !request.getEmail().matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
             throw new IllegalArgumentException("Invalid Email Format");
@@ -51,47 +52,42 @@ public class AdminServiceImpl implements AdminService {
             throw new IllegalArgumentException("Email already registered");
         }
 
+        // Mobile validation
         if (request.getAdminMobileNo() == null || request.getAdminMobileNo().length() != 10) {
             throw new IllegalArgumentException("Invalid mobile number (must be 10 digits)");
         }
 
-        if (adminRepository.existsByMobileNumber(request.getAdminMobileNo())) {
+        if (adminRepository.existsByMobile(request.getAdminMobileNo())) {
             throw new IllegalArgumentException("Mobile number already registered");
         }
 
-        if (request.getAdminName() == null || request.getAdminName().isEmpty()) {
-            throw new IllegalArgumentException("Admin name is required");
-        }
-
+        // Password validation
         if (!request.getPassword().equals(request.getReEnterPassword())) {
             throw new IllegalArgumentException("Passwords do not match");
         }
 
-        User user = new User();
-        user.setFullName(request.getAdminName());
-        user.setEmailId(request.getEmail());
-        user.setMobile(request.getAdminMobileNo());
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
-        user.setDesignation(SchoolConstants.ADMIN_ROLE);
-        user.setStatus(SchoolConstants.STATUS);
-        user.setIsLogin(false);
-
         Role role = roleRepository.findByRoleName(SchoolConstants.ADMIN_ROLE);
-        user.setRole(role);
 
-        userRepository.save(user);
-
+        // ✅ Create ONLY Admin (User fields come from parent)
         Admin admin = new Admin();
-        admin.setFullName(request.getAdminName());
-        admin.setMobileNumber(request.getAdminMobileNo());
+        admin.setFirstName(request.getAdminFirstName());
+        admin.setLastName(request.getAdminLastName());
+        admin.setFirstName(request.getAdminFirstName());
         admin.setEmailId(request.getEmail());
-        admin.setPassword(user.getPassword());
+        admin.setMobile(request.getAdminMobileNo());
+        admin.setPassword(passwordEncoder.encode(request.getPassword()));
+
+        admin.setRole(role);
+        admin.setStatus(SchoolConstants.STATUS);
+        admin.setIsLogin(false);
+        admin.setDesignation(SchoolConstants.ADMIN_ROLE);
 
         Admin savedAdmin = adminRepository.save(admin);
 
         return savedAdmin.getId();
     }
 
+    @Override
     public List<Student> getStudentList(
             Long schoolId,
             Long classId,
@@ -106,4 +102,25 @@ public class AdminServiceImpl implements AdminService {
         );
     }
 
+    @Override
+    public AdminProfileResponse getAdminProfile(Long adminId, Long schoolId) {
+
+        Admin admin = adminRepository.findByIdAndSchoolId(adminId, schoolId);
+
+        AdminProfileResponse response = new AdminProfileResponse();
+
+        response.setAdminId(admin.getId());
+        response.setUserId(admin.getId());
+        response.setFirstName(admin.getFirstName());
+        response.setLastName(admin.getLastName());
+        response.setEmailId(admin.getEmailId());
+        response.setMobile(admin.getMobile());
+        response.setGender(admin.getGender());
+        response.setDesignation(admin.getDesignation());
+        response.setProfilePicture(admin.getProfilePicture());
+        response.setSchoolId(admin.getSchoolId());
+
+        return response;
+    }
 }
+

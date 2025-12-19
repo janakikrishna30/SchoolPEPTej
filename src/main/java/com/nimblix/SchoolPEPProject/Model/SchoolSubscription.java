@@ -2,50 +2,47 @@ package com.nimblix.SchoolPEPProject.Model;
 
 import com.nimblix.SchoolPEPProject.Util.SchoolUtil;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
-@Table(name = "subjects")
+@Table(name = "school_subscription")
 @Getter
 @Setter
 @NoArgsConstructor
-public class Subjects {
-
-
+@AllArgsConstructor
+@Builder
+public class SchoolSubscription {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "subject_name")
-    private String subjectName;
+    @Column(name = "school_id")
+    private Long schoolId;
 
-    @Column(name = "subject_code")
-    private String code;
+    @Column(name = "plan_type")
+    private String planType;   // MONTHLY / YEARLY
 
-    @Column(name = "sub_desription")
-    private String subDescription;
+    @Column(name = "amount")
+    private Double amount;
 
-    @Column(name = "teacher_id")
-    private Long teacher;
+    @Column(name = "payment_ref", unique = true)
+    private String paymentRef;
 
-    @Column(name = "class_room_id")
-    private Long classRoomId;
+    @Column(name = "payment_status")
+    private String paymentStatus;
 
-    @Column(name = "total_marks")
-    private  Long totalMarks;
+    @Column(name = "start_date")
+    private String startDate;
 
-    @Column(name = "marks_obtained")
-    private Long marksObtained;
+    @Column(name = "end_date")
+    private String endDate;
 
     @Column(name = "created_time")
     private String createdTime;
 
     @Column(name = "updated_time")
     private String updatedTime;
-
 
     @PrePersist
     protected void onCreate(){
@@ -63,3 +60,4 @@ public class Subjects {
 
 
 }
+
