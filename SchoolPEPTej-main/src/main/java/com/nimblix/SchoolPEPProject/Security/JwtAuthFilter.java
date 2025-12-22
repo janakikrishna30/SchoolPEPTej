@@ -22,7 +22,15 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
     private final JwtUtil jwtUtil;
     private final CustomUserDetailsService userDetailsService;
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        String path = request.getServletPath();
 
+        return path.equals("/api/students/register")
+                || path.startsWith("/auth/")
+                || path.startsWith("/school/")
+                || path.startsWith("/teacher/");
+    }
 
     @Override
     protected void doFilterInternal(
