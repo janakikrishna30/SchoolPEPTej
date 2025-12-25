@@ -46,7 +46,7 @@ public class StudentServiceImpl implements StudentService {
         student.setEmailId(request.getEmail());
         student.setPassword(passwordEncoder.encode(request.getPassword()));
         student.setSchoolId(request.getSchoolId());
-        student.setStatus(SchoolConstants.ACTIVE);
+        student.setStatus(SchoolConstants.STATUS_ACTIVE);
         student.setIsLogin(Boolean.FALSE);
         student.setDesignation(SchoolConstants.STUDENT);
         student.setRole(studentRole);
@@ -126,7 +126,7 @@ public class StudentServiceImpl implements StudentService {
                 .toList();
     }
 
-    //  delete
+    //  Delete (Soft Delete)
     @Override
     public void deleteStudent(Long studentId) {
 
@@ -134,7 +134,7 @@ public class StudentServiceImpl implements StudentService {
                 .orElseThrow(() ->
                         new RuntimeException("Student not found with ID: " + studentId));
 
-        student.setStatus(SchoolConstants.IN_ACTIVE);
+        student.setStatus(SchoolConstants.STATUS_INACTIVE);
         studentRepository.save(student);
     }
 
