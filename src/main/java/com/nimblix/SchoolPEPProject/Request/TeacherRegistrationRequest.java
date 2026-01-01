@@ -11,7 +11,7 @@ public class TeacherRegistrationRequest {
     private String prefix;
     private String firstName;
     private String lastName;
-    private String email;
+    private String emailId;
     private String password;
     private  Long schoolId;
 

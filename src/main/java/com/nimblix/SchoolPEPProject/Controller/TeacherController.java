@@ -1,12 +1,12 @@
 package com.nimblix.SchoolPEPProject.Controller;
 
-import com.nimblix.SchoolPEPProject.Request.AssignmentShareRequest;
 import com.nimblix.SchoolPEPProject.Request.ClassroomRequest;
+import com.nimblix.SchoolPEPProject.Request.TeacherEditProfileRequest;
 import com.nimblix.SchoolPEPProject.Request.TeacherRegistrationRequest;
 import com.nimblix.SchoolPEPProject.Response.TeacherDetailsResponse;
+import com.nimblix.SchoolPEPProject.Response.TeacherProfileResponse;
 import com.nimblix.SchoolPEPProject.Service.TeacherService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,23 +17,25 @@ import java.util.Map;
 @RequestMapping("/teacher")
 @RequiredArgsConstructor
 public class TeacherController {
+
     private final TeacherService teacherService;
 
     @PostMapping("/teacherRegister")
-    public Map<String, String> registerTeacher(@RequestBody TeacherRegistrationRequest request) {
-        return teacherService.registerTeacher(request);
+    public ResponseEntity<Map<String, String>> registerTeacher(
+            @RequestBody TeacherRegistrationRequest request) {
+        return ResponseEntity.ok(teacherService.registerTeacher(request));
     }
+
+
 
     @GetMapping("/getTeacher")
     public ResponseEntity<TeacherDetailsResponse> getTeacherDetails(
             @RequestParam Long teacherId) {
 
-        TeacherDetailsResponse response =
-                teacherService.getTeacherDetails(teacherId);
-
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(
+                teacherService.getTeacherDetails(teacherId)
+        );
     }
-
 
     @PutMapping(
             value = "/updateTeacher",
@@ -46,43 +48,49 @@ public class TeacherController {
         return teacherService.updateTeacherDetails(request, teacherId);
     }
 
-
     @DeleteMapping("/delete")
-    public Map<String, String> deleteTeacherRecord(@RequestParam Long teacherId, @RequestParam Long schoolId) {
+    public Map<String, String> deleteTeacherRecord(
+            @RequestParam Long teacherId,
+            @RequestParam Long schoolId) {
+
         return teacherService.deleteTeacherDetails(teacherId, schoolId);
     }
 
-
     @PostMapping("/createClassroom")
-    public ResponseEntity<Map<String, String>> createClassroom(@RequestBody ClassroomRequest request) {
+    public ResponseEntity<Map<String, String>> createClassroom(
+            @RequestBody ClassroomRequest request) {
+
         return teacherService.createClassroom(request);
     }
 
+    @GetMapping("/profile")
+    public ResponseEntity<TeacherProfileResponse> viewTeacherProfile(
+            @RequestParam Long teacherId,
+            @RequestParam Long schoolId) {
 
-    //-------------Assignment Share Controller Methods ----------------
-    @PostMapping("/assignments/{assignmentId}/share")
-    public ResponseEntity<Map<String, String>> shareAssignment(
-            @PathVariable Long assignmentId,
-            @RequestBody AssignmentShareRequest request) {
-
-        Map<String, String> response =
-                teacherService.shareAssignment(assignmentId, request);
-
-        return ResponseEntity.ok(response);
-    }
-
-    //-------------Download Assignment Attachment Controller Methods ----------------
-    @GetMapping("/api/assignments/{assignmentId}/attachments/{attachmentId}/download")
-    public ResponseEntity<org.springframework.core.io.Resource> downloadAttachment(
-            @PathVariable Long assignmentId,
-            @PathVariable Long attachmentId,
-            @RequestParam Long userId
-    ) {
-        return teacherService.downloadAssignmentAttachment(
-                assignmentId,
-                attachmentId,
-                userId
+        return ResponseEntity.ok(
+                teacherService.getTeacherProfile(teacherId, schoolId)
         );
     }
 
+    @PutMapping("/editProfile")
+    public ResponseEntity<Map<String, String>> editTeacherProfile(
+            @RequestParam Long teacherId,
+            @RequestParam Long schoolId,
+            @RequestBody TeacherEditProfileRequest request) {
+
+        return ResponseEntity.ok(
+                teacherService.editTeacherProfile(teacherId, schoolId, request)
+        );
+    }
+
+    @DeleteMapping("/deleteProfile")
+    public ResponseEntity<Map<String, String>> deleteTeacherProfile(
+            @RequestParam Long teacherId,
+            @RequestParam Long schoolId) {
+
+        return ResponseEntity.ok(
+                teacherService.deleteTeacherProfile(teacherId, schoolId)
+        );
+    }
 }
