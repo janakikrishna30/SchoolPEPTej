@@ -8,7 +8,7 @@ import com.nimblix.SchoolPEPProject.Repository.StudentRepository;
 import com.nimblix.SchoolPEPProject.Request.StudentRegistrationRequest;
 import com.nimblix.SchoolPEPProject.Response.StudentDetailsResponse;
 import com.nimblix.SchoolPEPProject.Response.StudentResponse;
-import com.nimblix.SchoolPEPProject.Service.StudentService;
+import com.nimblix.SchoolPEPProject.service.StudentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;

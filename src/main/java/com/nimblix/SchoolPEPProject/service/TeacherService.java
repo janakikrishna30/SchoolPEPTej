@@ -1,4 +1,4 @@
-package com.nimblix.SchoolPEPProject.Service;
+package com.nimblix.SchoolPEPProject.service;
 
 import com.nimblix.SchoolPEPProject.Request.ClassroomRequest;
 import com.nimblix.SchoolPEPProject.Request.TeacherEditProfileRequest;

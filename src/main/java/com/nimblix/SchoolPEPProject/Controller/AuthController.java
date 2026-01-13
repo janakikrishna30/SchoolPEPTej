@@ -7,16 +7,15 @@ import com.nimblix.SchoolPEPProject.Request.AuthStudentRequest;
 import com.nimblix.SchoolPEPProject.Response.AuthStudentResponse;
 import com.nimblix.SchoolPEPProject.Security.JwtUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
 import java.util.Map;
@@ -30,7 +29,13 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final UserDetailsService userDetailsService;
     private final UserRepository userRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
+    @GetMapping("/encode")
+    public String encode() {
+        return passwordEncoder.encode("password123");
+    }
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody AuthStudentRequest request) {
 
@@ -43,7 +48,7 @@ public class AuthController {
             // Fetch from DB
             User user = userRepository
                     .findByEmailId(request.getEmail())
-                    .filter(u -> u.getStatus().equalsIgnoreCase(SchoolConstants.ACTIVE))
+                    .filter(u -> u.getStatus().equalsIgnoreCase(SchoolConstants.STATUS_ACTIVE))
                     .orElse(null);
 
             if (user == null) {
@@ -122,7 +127,7 @@ public class AuthController {
             }
 
             User user=userRepository.findByEmailId(request.getEmail())
-                    .filter(u -> SchoolConstants.ACTIVE.equalsIgnoreCase(u.getStatus()))
+                    .filter(u -> SchoolConstants.STATUS_ACTIVE.equalsIgnoreCase(u.getStatus()))
                     .orElse(null);
 
             if(user == null){

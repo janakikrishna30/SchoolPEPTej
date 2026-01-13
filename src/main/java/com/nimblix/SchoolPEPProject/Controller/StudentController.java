@@ -3,7 +3,7 @@ package com.nimblix.SchoolPEPProject.Controller;
 import com.nimblix.SchoolPEPProject.Request.StudentRegistrationRequest;
 import com.nimblix.SchoolPEPProject.Response.StudentDetailsResponse;
 import com.nimblix.SchoolPEPProject.Response.StudentResponse;
-import com.nimblix.SchoolPEPProject.Service.StudentService;
+import com.nimblix.SchoolPEPProject.service.StudentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

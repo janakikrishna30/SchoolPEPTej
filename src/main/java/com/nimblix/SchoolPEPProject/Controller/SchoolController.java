@@ -6,7 +6,7 @@ import com.nimblix.SchoolPEPProject.Request.OtpVerifyRequest;
 import com.nimblix.SchoolPEPProject.Request.SchoolRegistrationRequest;
 import com.nimblix.SchoolPEPProject.Request.SubscriptionRequest;
 import com.nimblix.SchoolPEPProject.Response.SchoolListResponse;
-import com.nimblix.SchoolPEPProject.Service.SchoolService;
+import com.nimblix.SchoolPEPProject.service.SchoolService;
 import com.nimblix.SchoolPEPProject.Util.SchoolUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

@@ -29,10 +29,6 @@ public class AttendancePerformanceService {
 
         int averageAttendance = (presentCount * 100) / days.size();
 
-        AttendancePerformanceResponse response = new AttendancePerformanceResponse();
-        response.setAverageAttendance(averageAttendance);
-        response.setWeekWise(days);
-
-        return response;
+        return new AttendancePerformanceResponse(averageAttendance, days);
     }
 }

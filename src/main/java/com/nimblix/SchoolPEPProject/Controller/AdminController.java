@@ -3,7 +3,7 @@ package com.nimblix.SchoolPEPProject.Controller;
 import com.nimblix.SchoolPEPProject.Constants.SchoolConstants;
 import com.nimblix.SchoolPEPProject.Model.Student;
 import com.nimblix.SchoolPEPProject.Request.AdminAccountCreateRequest;
-import com.nimblix.SchoolPEPProject.Service.AdminService;
+import com.nimblix.SchoolPEPProject.service.AdminService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -5,7 +5,7 @@ import com.nimblix.SchoolPEPProject.Request.TeacherEditProfileRequest;
 import com.nimblix.SchoolPEPProject.Request.TeacherRegistrationRequest;
 import com.nimblix.SchoolPEPProject.Response.TeacherDetailsResponse;
 import com.nimblix.SchoolPEPProject.Response.TeacherProfileResponse;
-import com.nimblix.SchoolPEPProject.Service.TeacherService;
+import com.nimblix.SchoolPEPProject.service.TeacherService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;

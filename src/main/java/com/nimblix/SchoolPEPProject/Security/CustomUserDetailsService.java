@@ -22,7 +22,7 @@ public class CustomUserDetailsService implements UserDetailsService {
             throws UsernameNotFoundException {
 
         User user = userRepository.findByEmailId(username.toLowerCase())
-                .filter(u -> SchoolConstants.ACTIVE.equalsIgnoreCase(u.getStatus()))
+                .filter(u -> SchoolConstants.STATUS_ACTIVE.equalsIgnoreCase(u.getStatus()))
                 .orElseThrow(() ->
                         new UsernameNotFoundException("Active user not found")
                 );

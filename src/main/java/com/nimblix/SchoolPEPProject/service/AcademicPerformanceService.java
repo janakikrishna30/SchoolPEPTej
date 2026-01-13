@@ -27,11 +27,9 @@ public class AcademicPerformanceService {
 
         int average = total / subjects.size();
 
-        AcademicPerformanceResponse response = new AcademicPerformanceResponse();
-        response.setAveragePercentage(average);
-        response.setSubjects(subjects);
 
-        return response;
+
+        return new AcademicPerformanceResponse(average, subjects);
     }
 }
 

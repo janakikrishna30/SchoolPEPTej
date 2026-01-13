@@ -16,6 +16,7 @@ public class AttendancePerformanceResponse {
     }
 
     public List<AttendanceDayDTO> getWeekWise() {
+
         return weekWise;
     }
 }

@@ -9,7 +9,7 @@ import com.nimblix.SchoolPEPProject.Repository.RoleRepository;
 import com.nimblix.SchoolPEPProject.Repository.StudentRepository;
 import com.nimblix.SchoolPEPProject.Request.AdminAccountCreateRequest;
 import com.nimblix.SchoolPEPProject.Response.AdminProfileResponse;
-import com.nimblix.SchoolPEPProject.Service.AdminService;
+import com.nimblix.SchoolPEPProject.service.AdminService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

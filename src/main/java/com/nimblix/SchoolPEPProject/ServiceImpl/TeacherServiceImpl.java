@@ -14,14 +14,13 @@ import com.nimblix.SchoolPEPProject.Request.TeacherEditProfileRequest;
 import com.nimblix.SchoolPEPProject.Request.TeacherRegistrationRequest;
 import com.nimblix.SchoolPEPProject.Response.TeacherDetailsResponse;
 import com.nimblix.SchoolPEPProject.Response.TeacherProfileResponse;
-import com.nimblix.SchoolPEPProject.Service.TeacherService;
+import com.nimblix.SchoolPEPProject.service.TeacherService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -196,23 +195,21 @@ public class TeacherServiceImpl implements TeacherService {
     @Override
     public TeacherProfileResponse getTeacherProfile(Long teacherId, Long schoolId) {
 
-        if (teacherId == null || teacherId <= 0 || schoolId == null || schoolId <= 0) {
-            throw new IllegalArgumentException("Invalid teacherId or schoolId");
-        }
-
         Teacher teacher =
                 teacherRepository.findByTeacherIdAndSchoolId(teacherId, schoolId);
 
         if (teacher == null) {
-            throw new UserNotFoundException(
-                    "Teacher not found or does not belong to school"
-            );
+            throw new RuntimeException("Teacher not found ");
+        }
+        if(teacher.getRole()==null ||
+                !SchoolConstants.TEACHER_ROLE.equalsIgnoreCase(teacher.getRole().getRoleName())){
+            throw new RuntimeException("User is not a teacher");
         }
 
-        if (!SchoolConstants.TEACHER_ROLE.equalsIgnoreCase(
-                teacher.getRole().getRoleName())) {
-            throw new IllegalArgumentException("User is not a teacher");
+        if (!SchoolConstants.STATUS_ACTIVE.equalsIgnoreCase(teacher.getStatus())){
+            throw new RuntimeException("Teacher is inactive");
         }
+
 
         return TeacherProfileResponse.builder()
                 .id(teacher.getId())
